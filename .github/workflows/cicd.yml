@@ -79,7 +79,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu
-          host: 172-31-45-102
+          host: ip-172-31-45-102
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           run: | 
