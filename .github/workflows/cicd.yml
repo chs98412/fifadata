@@ -78,7 +78,7 @@ jobs:
         - name: Setup SSH
           uses: webfactory/ssh-agent@v0.5.4
           with:
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+            ssh-private-key: ${{ secrets.PRIVATE_KEY }}
         - name: Execute remote commands
           run: |
             ssh -v ubuntu@${{ secrets.HOST_PROD }} "docker pull hyuksoon/fifadata"
