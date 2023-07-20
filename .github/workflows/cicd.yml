@@ -45,37 +45,40 @@ jobs:
 
       
 
-#       ## deploy to production
-#       - name: Deploy to prod
-#         uses: appleboy/ssh-action@master
-#         id: deploy-prod
-#         if: contains(github.ref, 'main')
-#         with:
-#           host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
-#           username: ubuntu
-#           key: ${{ secrets.PRIVATE_KEY }}
-#           envs: GITHUB_SHA
-#           script: |
-#             docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
-#             docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
-#             docker image prune -f
-  deploy:
-    needs: CI-CD
-    runs-on: ubuntu-latest
-    steps:
-        - name: Deploy to prod
-          uses: appleboy/ssh-action@v0.1.9 
-          id: deploy-prod
-          with:
-            host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
-            username: ubuntu
-            key: ${{ secrets.PRIVATE_KEY }}
-            envs: GITHUB_SHA
-            script: |
-              sudo docker ps
-              sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-test-prod
-              sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/docker-test-prod
-              sudo docker image prune -f
+      ## deploy to production
+      - name: Deploy to prod
+        uses: appleboy/ssh-action@master
+        id: deploy-prod
+        if: contains(github.ref, 'main')
+        with:
+          host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
+            docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
+            docker image prune -f
+#   deploy:
+#     needs: CI-CD
+#     runs-on: ubuntu-latest
+#     steps:
+#         - name: Deploy to prod
+#           uses: appleboy/ssh-action@v0.1.9 
+#           id: deploy-prod
+#           with:
+#             host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
+#             username: ubuntu
+#             key: ${{ secrets.PRIVATE_KEY }}
+#             envs: GITHUB_SHA
+#             script: |
+#               sudo docker ps
+#               sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-test-prod
+#               sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/docker-test-prod
+#               sudo docker image prune -f
+              
+              
+              
 #       - name: Setup SSH
 #         uses: webfactory/ssh-agent@v0.5.4
 #         with:
