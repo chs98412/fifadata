@@ -63,6 +63,19 @@ jobs:
     needs: CI-CD
     runs-on: ubuntu-latest
     steps:
+        - name: Deploy to prod
+          uses: appleboy/ssh-action@master
+          id: deploy-prod
+          with:
+            host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
+            username: ubuntu
+            key: ${{ secrets.PRIVATE_KEY }}
+            envs: GITHUB_SHA
+            script: |
+              sudo docker ps
+              sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-test-prod
+              sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/docker-test-prod
+              sudo docker image prune -f
 #       - name: Setup SSH
 #         uses: webfactory/ssh-agent@v0.5.4
 #         with:
@@ -75,16 +88,16 @@ jobs:
 #           ssh "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
 #           ssh "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
 #           ssh "image prune -f"
-        - name: Add remote server to known hosts
-          run: |
-            mkdir -p ~/.ssh
-            ssh-keyscan ${{ secrets.HOST_PROD }} >> ~/.ssh/known_hosts
-        - name: Setup SSH
-          uses: webfactory/ssh-agent@v0.5.4
-          with:
-            ssh-private-key: ${{ secrets.PRIVATE_KEY }}
-        - name: Execute remote commands
-          run: |
-            ssh -v ubuntu@${{ secrets.HOST_PROD }} "docker pull hyuksoon/fifadata"
-            ssh -v ubuntu@${{ secrets.HOST_PROD }} "docker run -p 8080:8080 hyuksoon/fifadata"
-            ssh -v ubuntu@${{ secrets.HOST_PROD }} "image prune -f"
+#         - name: Add remote server to known hosts
+#           run: |
+#             mkdir -p ~/.ssh
+#             ssh-keyscan ${{ secrets.HOST_PROD }} >> ~/.ssh/known_hosts
+#         - name: Setup SSH
+#           uses: webfactory/ssh-agent@v0.5.4
+#           with:
+#             ssh-private-key: ${{ secrets.PRIVATE_KEY }}
+#         - name: Execute remote commands
+#           run: |
+#             ssh -v ubuntu@${{ secrets.HOST_PROD }} "docker pull hyuksoon/fifadata"
+#             ssh -v ubuntu@${{ secrets.HOST_PROD }} "docker run -p 8080:8080 hyuksoon/fifadata"
+#             ssh -v ubuntu@${{ secrets.HOST_PROD }} "image prune -f"
