@@ -81,8 +81,7 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           host: ${{ secrets.HOST_PROD }}
           key: ${{ secrets.PRIVATE_KEY }}
-          script_stop: true
-          script: | 
+          run: | 
             docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
             docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
             image prune -f
