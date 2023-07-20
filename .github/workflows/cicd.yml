@@ -72,3 +72,4 @@ jobs:
           ssh -v ubuntu@${{ secrets.SERVER_IP }} "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
           ssh -v ubuntu@${{ secrets.SERVER_IP }} "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
           ssh -v ubuntu@${{ secrets.SERVER_IP }} "image prune -f"
+          
