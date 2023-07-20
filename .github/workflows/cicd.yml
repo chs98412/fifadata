@@ -69,7 +69,7 @@ jobs:
           ssh-private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Execute remote commands
         run: |
-          ssh -v ubuntu@${{ secrets.SERVER_IP }} "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
-          ssh -v ubuntu@${{ secrets.SERVER_IP }} "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
-          ssh -v ubuntu@${{ secrets.SERVER_IP }} "image prune -f"
+          ssh -v ubuntu@ip-172-31-45-102 "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
+          ssh -v ubuntu@ip-172-31-45-102 "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
+          ssh -v ubuntu@ip-172-31-45-102 "image prune -f"
           
