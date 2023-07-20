@@ -58,5 +58,5 @@ jobs:
           script: |
             sudo docker ps
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
-            sudo docker run -d -p 8082:8082 ${{ secrets.DOCKER_USERNAME }}/fifadata
+            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
             sudo docker image prune -f
