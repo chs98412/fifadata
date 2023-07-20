@@ -30,7 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-
+  
       # gradle build
       - name: Build with Gradle
         run: ./gradlew build -x test
@@ -43,7 +43,7 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/fifadata .
           docker push ${{ secrets.DOCKER_USERNAME }}/fifadata
 
-
+      
 
       ## deploy to production
       - name: Deploy to prod
@@ -59,3 +59,24 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
             docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
             docker image prune -f
+  deploy:
+    needs: CI-CD
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: cicdsample
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_KEY }}
+      - name: Add remote server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan ${{ secrets.HOST_PROD }} >> ~/.ssh/known_hosts
+      - name: Execute remote commands
+        run: |
+          ssh -v ubuntu@${{ secrets.SERVER_IP }} "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
+          ssh -v ubuntu@${{ secrets.SERVER_IP }} "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
+          ssh -v ubuntu@${{ secrets.SERVER_IP }} "image prune -f"
