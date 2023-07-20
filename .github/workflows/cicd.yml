@@ -75,13 +75,12 @@ jobs:
 #           ssh "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
 #           ssh "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
 #           ssh "image prune -f"
-      - name: Execute Server Init Script
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          username: ubuntu
-          host: 172.31.45.102
-          ssh-private-key: ${{ secrets.PRIVATE_KEY }}
-          run: | 
-            ssh "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
-            ssh "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
-            ssh "image prune -f"
+        - name: Setup SSH
+          uses: webfactory/ssh-agent@v0.5.4
+          with:
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        - name: Execute remote commands
+          run: |
+            ssh -v ubuntu@${{ secrets.HOST_PROD }} "docker pull hyuksoon/fifadata"
+            ssh -v ubuntu@${{ secrets.HOST_PROD }} "docker run -p 8080:8080 hyuksoon/fifadata"
+            ssh -v ubuntu@${{ secrets.HOST_PROD }} "image prune -f"
