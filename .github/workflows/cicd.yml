@@ -66,10 +66,13 @@ jobs:
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
+          username: ${{ secrets.USER_NAME }}
+          host: ${{ secrets.HOST_PROD }}
           ssh-private-key: ${{ secrets.PRIVATE_KEY }}
+          
       - name: Execute remote commands
         run: |
-          ssh -v ubuntu@ip-172-31-45-102 "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
-          ssh -v ubuntu@ip-172-31-45-102 "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
-          ssh -v ubuntu@ip-172-31-45-102 "image prune -f"
+          ssh "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
+          ssh "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
+          ssh "image prune -f"
           
