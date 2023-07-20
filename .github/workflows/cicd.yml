@@ -78,8 +78,8 @@ jobs:
       - name: Execute Server Init Script
         uses: appleboy/ssh-action@master
         with:
-          username: ${{ secrets.USER_NAME }}
-          host: ${{ secrets.HOST_PROD }}
+          username: ubuntu
+          host: 172-31-45-102
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           run: | 
