@@ -81,7 +81,6 @@ jobs:
           username: ubuntu
           host: 172.31.45.102
           key: ${{ secrets.PRIVATE_KEY }}
-          port: 22
           run: | 
             docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
             docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
