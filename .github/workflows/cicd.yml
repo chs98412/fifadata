@@ -75,6 +75,10 @@ jobs:
 #           ssh "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
 #           ssh "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
 #           ssh "image prune -f"
+        - name: Add remote server to known hosts
+          run: |
+            mkdir -p ~/.ssh
+            ssh-keyscan ${{ secrets.HOST_PROD }} >> ~/.ssh/known_hosts
         - name: Setup SSH
           uses: webfactory/ssh-agent@v0.5.4
           with:
