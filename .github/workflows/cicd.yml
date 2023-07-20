@@ -76,12 +76,12 @@ jobs:
 #           ssh "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
 #           ssh "image prune -f"
       - name: Execute Server Init Script
-        uses: appleboy/ssh-action@master
+        uses: webfactory/ssh-agent@v0.5.4
         with:
           username: ubuntu
           host: 172.31.45.102
-          key: ${{ secrets.PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.PRIVATE_KEY }}
           run: | 
-            docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
-            docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
-            image prune -f
+            ssh "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
+            ssh "docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata"
+            ssh "image prune -f"
