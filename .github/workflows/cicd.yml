@@ -67,10 +67,6 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.PRIVATE_KEY }}
-      - name: Add remote server to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan ${{ secrets.HOST_PROD }} >> ~/.ssh/known_hosts
       - name: Execute remote commands
         run: |
           ssh -v ubuntu@${{ secrets.SERVER_IP }} "docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata"
