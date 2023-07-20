@@ -56,7 +56,6 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
-            sudo docker ps
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
-            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
-            sudo docker image prune -f
+            docker pull ${{ secrets.DOCKER_USERNAME }}/fifadata
+            docker run -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/fifadata
+            docker image prune -f
